@@ -200,7 +200,7 @@ class CliTests(unittest.TestCase):
             out = self.dir / f'{name}.html'
             r = self.run_card(str(EXAMPLES / f'{name}.json'), '-o', str(out), '--state', 'sent', '--sent-at', '1:00 PM')
             self.assertEqual(r.returncode, 0, r.stderr)
-            self.assertEqual(Path(r.stdout.strip()), out.resolve())
+            self.assertEqual(Path(r.stdout.strip()).resolve(), out.resolve())
             self.assertIn('1:00 PM', out.read_text(encoding='utf-8'))
 
     def test_missing_file(self):
