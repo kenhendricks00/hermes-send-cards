@@ -1,0 +1,13 @@
+{
+  "draft_id": "li-55c0",
+  "channel": "linkedin",
+  "from": "Alex Example",
+  "to": [
+    {
+      "name": "Jordan Park",
+      "address": "Product Lead at Example Co"
+    }
+  ],
+  "body": "Hi Jordan, great talk at the product meetup last week. Your point about shipping smaller experiments stuck with me. Would you be open to a 20 minute chat sometime next week? I'd love to hear how your team runs discovery.\n\nThanks,\nAlex",
+  "sent_at": "Nov 26, 4:40 PM"
+}

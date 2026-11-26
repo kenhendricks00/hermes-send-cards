@@ -1,0 +1,22 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "draft-cards",
+  "version": "1.0.0",
+  "description": "Approval cards for outgoing messages: before your Hermes agent sends an email, chat message, DM or X post, it shows an inline card with the recipients and the exact text, editable in place, with Discard and Send buttons. After sending, the card collapses into a 'Sent' pill.",
+  "author": {
+    "name": "Kenneth Hendricks",
+    "url": "https://github.com/kenhendricks00"
+  },
+  "homepage": "https://github.com/kenhendricks00/hermes-draft-cards",
+  "repository": "https://github.com/kenhendricks00/hermes-draft-cards",
+  "license": "MIT",
+  "keywords": [
+    "drafts",
+    "email",
+    "messages",
+    "approval",
+    "confirmation",
+    "widget",
+    "preview"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "draft_id": "em-7f3a",
+  "revision": 2,
+  "channel": "gmail",
+  "from": "you@example.com",
+  "to": [
+    {
+      "name": "Dana Rivera",
+      "address": "dana.rivera@example.com"
+    }
+  ],
+  "cc": [
+    {
+      "name": "Sam Lee",
+      "address": "sam@example.com"
+    },
+    "ops-team@example.com"
+  ],
+  "subject": "Re: Q4 venue contract and next steps",
+  "reply_to": {
+    "author": "Dana Rivera",
+    "date": "Tue, Nov 24, 9:12 AM",
+    "text": "Hi! Attaching the revised venue contract. Could you look over section 4 (cancellation terms) and the catering minimum before Friday? We also need a final headcount by the 4th so the venue can lock in staffing. Let me know if you want to hop on a call."
+  },
+  "body": "Hi Dana,\n\nThanks for sending the revised contract. I went through it this morning and have a few notes:\n\n1. Section 4: the 30-day cancellation window works for us, but can we get the deposit refund at 50% instead of 25%?\n2. Catering minimum: $4,500 is fine as long as it includes the coffee service.\n3. Headcount: we're tracking at 85 right now. I'll confirm the final number by Dec 3.\n\nI marked up the PDF with comments (attached). The full schedule draft is here too: https://docs.example.com/schedule/q4-offsite\n\nHappy to jump on a quick call Thursday afternoon if that's easier.\n\nBest,\nAlex",
+  "attachments": [
+    {
+      "name": "Venue_Contract_v3_comments.pdf",
+      "size": "1.2 MB"
+    },
+    {
+      "name": "headcount.xlsx",
+      "size": "24 KB"
+    }
+  ],
+  "sent_at": "Today 2:14 PM"
+}

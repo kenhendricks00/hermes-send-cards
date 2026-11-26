@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>Draft Cards</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e2129"/>
+      <stop offset="1" stop-color="#121419"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <!-- message bubble with an envelope -->
+  <path d="M120 100 h272 a28 28 0 0 1 28 28 v178 a28 28 0 0 1 -28 28 h-176 l-58 46 v-46 h-38 a28 28 0 0 1 -28 -28 v-178 a28 28 0 0 1 28 -28 z" fill="#e8eaef"/>
+  <rect x="150" y="140" width="212" height="148" rx="18" fill="none" stroke="#9aa1ae" stroke-width="14"/>
+  <path d="M160 156 l96 70 l96 -70" fill="none" stroke="#9aa1ae" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- split send pill -->
+  <rect x="206" y="324" width="236" height="88" rx="44" fill="#60a5fa" stroke="#121419" stroke-width="10"/>
+  <text x="298" y="381" text-anchor="middle" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="42" font-weight="700" fill="#0b1b33">Send</text>
+  <rect x="364" y="346" width="4" height="44" rx="2" fill="#0b1b33" opacity=".35"/>
+  <path d="M386 360 l13 13 l13 -13" fill="none" stroke="#0b1b33" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
