@@ -9,7 +9,7 @@ import tempfile
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('draft_card', ROOT / 'skills/draft-cards/scripts/draft_card.py')
+spec = importlib.util.spec_from_file_location('draft_card', ROOT / 'skills/send-cards/scripts/draft_card.py')
 card = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(card)
 
@@ -30,7 +30,7 @@ body{background:radial-gradient(900px 500px at 100% 0,#1b2230,transparent),#0f10
 h1{font-size:64px;margin:46px 0 14px;font-weight:700;color:#f3f4f6;letter-spacing:-.5px}
 p{font-size:26px;line-height:1.4;color:#9aa1ae;margin:0;max-width:520px}
 .r{width:400px;flex:none}</style>
-<div class="l"><img src="ICON"><h1>Draft Cards</h1><p>Read every message your Hermes agent wants to send, then tap Send.</p></div>
+<div class="l"><img src="ICON"><h1>Send Cards</h1><p>Read every message your Hermes agent wants to send, then tap Send.</p></div>
 <div class="r">CARD</div>"""
 
 BANNER_DRAFT = {
@@ -63,11 +63,11 @@ def main():
             page.wait_for_timeout(300)
             page.screenshot(path=str(out))
 
-        shot(X_PREVIEW.replace('ICON', icon), 1200, 630, ROOT / 'skills/draft-cards/examples/x-preview.png')
+        shot(X_PREVIEW.replace('ICON', icon), 1200, 630, ROOT / 'skills/send-cards/examples/x-preview.png')
         banner_card = card.render(BANNER_DRAFT)
         shot(BANNER.replace('THEME', THEME).replace('ICON', icon).replace('CARD', banner_card), 1200, 600, docs / 'banner.png')
         browser.close()
-    print('Wrote assets/icon-{512,256,128,64}.png, skills/draft-cards/examples/x-preview.png, docs/banner.png')
+    print('Wrote assets/icon-{512,256,128,64}.png, skills/send-cards/examples/x-preview.png, docs/banner.png')
 
 
 if __name__ == '__main__':

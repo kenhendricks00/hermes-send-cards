@@ -1,6 +1,6 @@
-# Draft Cards for Hermes Agent
+# Send Cards for Hermes Agent
 
-![Draft Cards](docs/banner.png)
+![Send Cards](docs/banner.png)
 
 An approval card for every message your
 [Hermes Agent](https://github.com/NousResearch/hermes-agent) sends for you.
@@ -16,6 +16,8 @@ Once the message goes out, the same card collapses into a pill, "Gmail Sent ·
 dana.rivera@example.com · 2:14 PM", that expands to the read-only message. A
 discarded draft reads "Discarded". The idea is inspired by the draft cards in
 other agent apps.
+
+Send Cards is not affiliated with the separate "Draft Cards" plugin by arsiktech.
 
 | Email draft | Send menu open |
 | --- | --- |
@@ -37,11 +39,11 @@ which send a prompt back to the agent as your message.
 ## Install
 
 ```bash
-hermes plugins install kenhendricks00/hermes-draft-cards --enable
+hermes plugins install kenhendricks00/hermes-send-cards --enable
 ```
 
 This is a [Portable Agent Plugins v1](https://agent-plugins.org/specification)
-package with one skill, `draft-cards:draft-cards`, and two scripts. Start a new
+package with one skill, `send-cards:send-cards`, and two scripts. Start a new
 session after installing so the skill shows up.
 
 ## Usage
@@ -53,7 +55,7 @@ Ask Hermes to write something the way you normally would:
 The agent drafts the reply, writes it to a JSON file and renders the card:
 
 ```bash
-python skills/draft-cards/scripts/draft_card.py draft.json -o card.html
+python skills/send-cards/scripts/draft_card.py draft.json -o card.html
 ```
 
 and replies with one line plus
@@ -67,7 +69,7 @@ the agent receives lists only the changed fields, and it sends exactly that.
 After the channel confirms delivery, it re-renders the same file as a pill:
 
 ```bash
-python skills/draft-cards/scripts/draft_card.py draft.json -o card.html --state sent --sent-at "2:14 PM"
+python skills/send-cards/scripts/draft_card.py draft.json -o card.html --state sent --sent-at "2:14 PM"
 ```
 
 ```
@@ -76,11 +78,11 @@ python skills/draft-cards/scripts/draft_card.py draft.json -o card.html --state 
 
 States: `pending` (default), `sent`, `discarded`. The JSON schema is in the
 script's docstring, and
-[`skills/draft-cards/examples/`](skills/draft-cards/examples) has email,
+[`skills/send-cards/examples/`](skills/send-cards/examples) has email,
 Discord, LinkedIn and X examples with made-up data. Try one locally:
 
 ```bash
-python skills/draft-cards/scripts/draft_card.py skills/draft-cards/examples/email.json -o demo.html
+python skills/send-cards/scripts/draft_card.py skills/send-cards/examples/email.json -o demo.html
 ```
 
 Both scripts use only the Python standard library.
@@ -98,9 +100,9 @@ Rules are stored by `draft_rules.py` in `$HERMES_HOME/draft_rules.json`, per
 channel kind (email, chat, dm) and exact recipient:
 
 ```bash
-python skills/draft-cards/scripts/draft_rules.py list
-python skills/draft-cards/scripts/draft_rules.py approve email dana@example.com
-python skills/draft-cards/scripts/draft_rules.py enable-bot Hermes
+python skills/send-cards/scripts/draft_rules.py list
+python skills/send-cards/scripts/draft_rules.py approve email dana@example.com
+python skills/send-cards/scripts/draft_rules.py enable-bot Hermes
 ```
 
 ## Safety
@@ -158,8 +160,8 @@ The plugin does not touch the host frame itself.
 ## Develop
 
 ```bash
-git clone https://github.com/kenhendricks00/hermes-draft-cards
-cd hermes-draft-cards
+git clone https://github.com/kenhendricks00/hermes-send-cards
+cd hermes-send-cards
 python -m unittest discover -s tests -v
 hermes plugins validate . --install-deps
 ```

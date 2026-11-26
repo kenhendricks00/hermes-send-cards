@@ -14,8 +14,8 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = ROOT / 'skills/draft-cards/scripts'
-EXAMPLES = ROOT / 'skills/draft-cards/examples'
+SCRIPTS = ROOT / 'skills/send-cards/scripts'
+EXAMPLES = ROOT / 'skills/send-cards/examples'
 
 
 def load(name):

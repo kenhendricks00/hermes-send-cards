@@ -1,5 +1,5 @@
 ---
-name: draft-cards
+name: send-cards
 description: Use before sending any email, chat message, DM, reply, comment or post for the user. Show an inline draft card with the recipients and the exact text, editable in place, with Discard and Send buttons; send only after the user taps Send (or gives an explicit yes for that draft). After sending, re-render the card as a collapsed "Sent" pill.
 license: MIT
 metadata:
@@ -8,7 +8,7 @@ metadata:
   tags: "email, discord, slack, linkedin, sms, x, messages, drafts, approval, widget"
 ---
 
-# Draft Cards
+# Send Cards
 
 An approval step for every message you send on the user's behalf. Instead of
 pasting a draft into chat and asking "send it?", you show an inline card:

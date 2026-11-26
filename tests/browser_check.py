@@ -15,8 +15,8 @@ import threading
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
-EXAMPLES = ROOT / 'skills/draft-cards/examples'
-spec = importlib.util.spec_from_file_location('draft_card', ROOT / 'skills/draft-cards/scripts/draft_card.py')
+EXAMPLES = ROOT / 'skills/send-cards/examples'
+spec = importlib.util.spec_from_file_location('draft_card', ROOT / 'skills/send-cards/scripts/draft_card.py')
 card = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(card)
 
