@@ -176,6 +176,29 @@ class DoneStateTests(unittest.TestCase):
         self.assertNotIn('2:14 PM', card.render(dict(example('email'), sent_at='2:14 PM'), 'discarded'))
 
 
+class GitHubTests(unittest.TestCase):
+    def test_git_metadata_and_actions(self):
+        draft = example('github')
+        page = card.render(draft)
+        for value in ('>Repo<', '>Branch<', '>Changes<', '<h3>Summary</h3>', '>Update PR<',
+                      'Send draft github-demo exactly as shown.'):
+            self.assertIn(value, page)
+        self.assertNotIn('contenteditable', page)
+        self.assertIn('>Open PR<', card.render(dict(draft, pr_number=None)))
+        self.assertIn('Opened', card.render(dict(draft, action='open'), 'sent'))
+        self.assertIn('View on GitHub', card.render(draft, 'sent'))
+        self.assertNotIn('View on GitHub', card.render(dict(draft, url='https://github.com/other/repo/pull/42'), 'sent'))
+        self.assertNotIn('data-hermes-send', card.render(draft, 'discarded'))
+
+    def test_git_input_is_escaped(self):
+        page = card.render(dict(example('github'), body='<img src=x> [x](javascript:alert(1))', subject='<img src=x>'))
+        self.assertNotIn('<img src=x>', page)
+        self.assertNotIn('href="javascript:', page)
+        for update in ({'repo': 'https://github.com/example/project'}, {'pr_number': '42'}, {'pr_number': None, 'action': 'update'}):
+            with self.assertRaises(card.DraftError):
+                card.render(dict(example('github'), **update))
+
+
 class RenderErrorTests(unittest.TestCase):
     def test_bad_input(self):
         for bad in ({}, {'draft_id': ' '}, [], {'draft_id': 'a', 'kind': 'fax'}, {'draft_id': 'a', 'revision': 'x'}):

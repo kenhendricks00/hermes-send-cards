@@ -60,6 +60,12 @@ OUTLINE = {
              'stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>'),
 }
 OUTLINE["dm"] = OUTLINE["chat"]
+PR_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6 8.5v7M18 15.5V9a2 2 0 0 0-2-2h-4"/><path d="m14 4.5-2.5 2.5L14 9.5"/></svg>'
+TOGGLE = ('<span class="tg" aria-hidden="true">'
+          '<svg class="t-open" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m7 9 5-5 5 5M7 15l5 5 5-5"/></svg>'
+          '<svg class="t-close" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m7 4 5 5 5-5M7 20l5-5 5 5"/></svg></span>')
+
+
 
 CLIP = ('<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" '
         'stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 '
@@ -145,12 +151,28 @@ DONE_CSS = """
 .gc.done .st2{flex:1}
 .gc.done .body{padding:4px 22px 20px}
 .gc.done .xims{margin-top:12px}
-.ud{width:8px;height:14px;position:relative;opacity:.6;flex:none}
-.ud:before,.ud:after{content:"";position:absolute;left:0;width:6px;height:6px;border-left:1.5px solid var(--fg);border-top:1.5px solid var(--fg)}
-.ud:before{top:0;transform:rotate(45deg)}.ud:after{bottom:0;transform:rotate(225deg)}
-.gc.done[open]>summary.pill .ud{height:16px}
-.gc.done[open]>summary.pill .ud:before{transform:rotate(225deg);top:-1px}
-.gc.done[open]>summary.pill .ud:after{transform:rotate(45deg);bottom:-1px}
+
+.tg{width:28px;height:28px;border-radius:999px;display:grid;place-items:center;flex:none;margin:-4px -6px -4px 0;
+ color:var(--mfg);transition:opacity .15s ease,background-color .15s ease,color .15s ease}
+.tg svg{grid-area:1/1}.gc.done[open] .t-open,.gc.done:not([open]) .t-close{display:none}
+.gc.done>summary.pill .tg:hover{background:color-mix(in srgb,var(--fg) 10%,transparent);color:var(--fg)}
+@media(hover:hover) and (pointer:fine){.tg{opacity:0}.gc.done:hover .tg,.gc.done>summary.pill:focus-visible .tg{opacity:1}}
+.gc.pr .gr{grid-template-columns:68px minmax(0,1fr)}.gc.pr .gr .k{white-space:nowrap}
+.prh{color:var(--mfg);font-size:15px;margin-left:2px}
+.gr .v code,.md code{font:12.5px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;padding:1px 6px;border-radius:6px;
+ background:color-mix(in srgb,var(--fg) 9%,transparent)}
+.br{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px}.br .ar{color:var(--mfg)}
+.md{font-size:14.5px;line-height:1.55;word-break:break-word}
+.md h2,.md h3,.md h4{font-size:15.5px;font-weight:600;margin:14px 0 6px}.md>:first-child{margin-top:0}
+.md p{margin:0 0 9px}.md ul{margin:0 0 9px;padding-left:20px}.md li{margin:3px 0}
+.md a{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:color-mix(in srgb,var(--fg) 40%,transparent)}
+.mdw.long .md{max-height:300px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 75%,transparent);mask-image:linear-gradient(#000 75%,transparent)}
+.mdw.long:has(details.sm[open]) .md{max-height:none;-webkit-mask-image:none;mask-image:none}
+.prb{all:unset;cursor:pointer;background:var(--fg);color:var(--cd);border-radius:999px;padding:10px 22px;font-size:15.5px;font-weight:500}
+.gc.pr .sm>summary{cursor:pointer;color:var(--mfg);padding:4px 0}.gc.pr .sm[open] .n1,.gc.pr .sm:not([open]) .n2{display:none}
+.gc.pr :is(.prb,.dsb):focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.gc.pr .mn{min-width:0}.gc.pr .hd{flex-wrap:wrap}.gc.pr .ar{flex:none}.gc.pr .br{min-width:0}.gc.pr .br code{overflow-wrap:anywhere}.gc.pr .st2{overflow-wrap:anywhere}
+
 """
 
 XCSS = """
@@ -175,7 +197,7 @@ XCSS = """
 # The Send/Post pill uses the foreground color as background and the card color as text. A host that
 # leaves --card undefined or equal to the foreground gives white on white, so pick the text color from
 # the pill's real computed background. Reads only this widget's own computed styles.
-CONTRAST_JS = """<script>(function(){function fix(){document.querySelectorAll('.xp,.sp').forEach(b=>{
+CONTRAST_JS = """<script>(function(){function fix(){document.querySelectorAll('.xp,.sp,.prb').forEach(b=>{
  const m=getComputedStyle(b).backgroundColor.match(/[\\d.]+/g);if(!m||m.length<3||(m[3]!==undefined&&+m[3]<0.5))return;
  const L=(0.299*m[0]+0.587*m[1]+0.114*m[2])/255;const c=L>0.6?'#0b0b0c':'#ffffff';
  b.style.color=c;b.querySelectorAll('.chev').forEach(v=>v.style.borderColor=c)})}
@@ -242,6 +264,57 @@ def x_length(text):
     return len(URL_RE.sub("x" * 23, text))
 
 
+MD_INLINE = re.compile(r"`([^`]+)`|\*\*([^*]+)\*\*|\[([^\]]+)\]\((https?://[^)\s]+)\)|(https?://[^\s<>()]+[^\s<>().,;:!?])")
+
+
+def md_inline(t):
+    out, pos = [], 0
+    for m in MD_INLINE.finditer(t):
+        out.append(E(t[pos:m.start()]))
+        code, bold, ltext, lurl, bare = m.groups()
+        if code is not None:
+            out.append(f"<code>{E(code)}</code>")
+        elif bold is not None:
+            out.append(f"<b>{E(bold)}</b>")
+        elif ltext is not None:
+            out.append(f'<a href="{E(lurl)}" target="_blank" rel="noopener">{E(ltext)}</a>')
+        else:
+            out.append(f'<a href="{E(bare)}" target="_blank" rel="noopener">{E(bare)}</a>')
+        pos = m.end()
+    out.append(E(t[pos:]))
+    return "".join(out)
+
+
+def md(text):
+    """Small, escaped Markdown subset for PR bodies: #/##/### headings, - / * bullets, paragraphs, inline code/bold/links."""
+    html_out, para, items = [], [], []
+    def flush():
+        if para:
+            html_out.append("<p>" + md_inline(" ".join(para)) + "</p>"); para.clear()
+        if items:
+            html_out.append("<ul>" + "".join(f"<li>{md_inline(i)}</li>" for i in items) + "</ul>"); items.clear()
+    for raw in text.split("\n"):
+        line = raw.rstrip()
+        h = re.match(r"^(#{1,4})\s+(.*)$", line)
+        b = re.match(r"^\s*[-*]\s+(.*)$", line)
+        if not line.strip():
+            flush()
+        elif h:
+            flush(); lvl = min(4, len(h.group(1)) + 1); html_out.append(f"<h{lvl}>{md_inline(h.group(2))}</h{lvl}>")
+        elif b:
+            if para:
+                flush()
+            items.append(b.group(1))
+        elif items and raw.startswith("  "):
+            items[-1] += " " + line.strip()
+        else:
+            if items:
+                flush()
+            para.append(line.strip())
+    flush()
+    return "".join(html_out)
+
+
 def norm_people(lst):
     res = []
     for p in lst or []:
@@ -296,6 +369,8 @@ def render(o, state="pending", base_dir=None):
         rev = int(o.get("revision", 1) or 1)
     except (TypeError, ValueError):
         raise DraftError("revision must be a number")
+    if ch == "github":
+        return render_pr(o, state, "GitHub", did, rev, str(o.get("body") or ""))
     sender = str(o.get("from", "") or "")
     to, cc, bcc = norm_people(o.get("to")), norm_people(o.get("cc")), norm_people(o.get("bcc"))
     where = str(o.get("where", "") or "")
@@ -344,7 +419,7 @@ def render(o, state="pending", base_dir=None):
         when = f" \u00b7 {E(str(o['sent_at']))}" if state == "sent" and o.get("sent_at") else ""
         return (f'<style>{CSS}{DONE_CSS}{XCSS}</style>\n'
                 f'<details class="gc done" data-state="{state}" data-draft="{E(did)}"><summary class="pill">{oicon}'
-                f'<span class="mn">{E(cname)}</span><span class="dm st2">{label}{tail}{when}</span><span class="ud"></span></summary>\n'
+                f'<span class="mn">{E(cname)}</span><span class="dm st2">{label}{tail}{when}</span>{TOGGLE}</summary>\n'
                 f' <div class="body">{rbody}</div>\n</details>')
 
     discard_prompt = f"Discard draft {did}; do not send it."
@@ -458,6 +533,71 @@ sb.addEventListener('click',()=>{{if(!ok())return;
   if(a&&a.ok===false)unlock(a.error==='throttled'?'Too fast. Tap Send again.':'Not delivered. Tap Send again.')}},()=>unlock('Not delivered. Tap Send again.'))}}
 }});
 gc.querySelectorAll('[data-hermes-send]').forEach(b=>b.addEventListener('click',lock));
+}})()</script>
+{CONTRAST_JS}"""
+
+
+def render_pr(o, state, cname, did, rev, text):
+    """GitHub pull request draft: repo, branch and change rows, Markdown body, Open/Update PR button."""
+    repo = o.get("repo", "")
+    if not isinstance(repo, str) or not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo):
+        raise DraftError("GitHub drafts require an owner/repo")
+    num = o.get("pr_number")
+    if num is not None and (type(num) is not int or num < 1):
+        raise DraftError("pr_number must be a positive integer")
+    if o.get("action") == "update" and num is None:
+        raise DraftError("PR updates require pr_number")
+    update = num is not None and (state != "sent" or o.get("action") != "open")
+    what = f"Pull request #{num}" if num else "New pull request"
+    rows = []
+    if repo:
+        rows.append(("Repo", f"<code>{E(repo)}</code>"))
+    if o.get("base") or o.get("head"):
+        rows.append(("Branch", f'<span class="br"><code>{E(o.get("base", "main"))}</code><span class="ar">\u2190</span><code>{E(o.get("head", ""))}</code></span>'))
+    if o.get("changes"):
+        rows.append(("Changes", E(o["changes"])))
+    rows_html = "".join(f'<div class="gr"><span class="k">{k}</span><span class="v">{v}</span></div>' for k, v in rows)
+    long_ = sum(max(1, (len(line) + 69) // 70) for line in text.splitlines()) > 14
+    body = (f'<div class="mdw{" long" if long_ else ""}"><div class="md">{md(text)}</div>'
+            + ('<details class="sm"><summary><span class="n1">Show more</span><span class="n2">Show less</span>'
+               '<span class="chev"></span></summary></details>' if long_ else "") + "</div>")
+    oi = f'<span class="oi">{PR_ICON}</span>'
+    title = f'<div class="gt">{E(o.get("subject", ""))}</div>'
+    if state in ("sent", "discarded"):
+        label = "Discarded" if state == "discarded" else ("Updated" if update else "Opened")
+        ref = repo + (f" #{num}" if num else "")
+        tail = " · " + E(ref) if ref else ""
+        when = f" \u00b7 {E(o['sent_at'])}" if state == "sent" and o.get("sent_at") else ""
+        link = (f'<div class="gf" style="justify-content:flex-start;margin-top:14px"><a class="dsb" href="{E(o["url"])}" target="_blank" rel="noopener">View on GitHub \u2197</a></div>'
+                if state == "sent" and num is not None and o.get("url") == f"https://github.com/{repo}/pull/{num}" else "")
+        return f"""<style>{CSS}{DONE_CSS}</style>
+<details class="gc done gk pr"><summary class="pill">{oi}<span class="mn">{E(cname)}</span><span class="dm st2">{label}{tail}{when}</span>{TOGGLE}</summary>
+ <div class="body">{title}<div class="grs">{rows_html}</div>{body}{link}</div>
+</details>{CONTRAST_JS}"""
+    discard = E(f"Discard draft {did}; do not send it.")
+    approve = js_json(f"Send draft {did} exactly as shown.")
+    btn = "Update PR" if update else "Open PR"
+    return f"""<style>{CSS}{DONE_CSS}</style>
+<div class="gc gk pr" id="gc">
+ <div class="hd">{oi}<span class="mn">{E(cname)}</span><span class="prh">{E(what)}</span>{('<span class="tag">Draft v' + str(rev) + '</span>') if rev > 1 else ''}</div>
+ {title}
+ <div class="grs">{rows_html}</div>
+ {body}
+ <div class="gf"><button class="dsb" data-hermes-send="{discard}">Discard</button>
+  <button class="prb" id="pr-send">{btn}</button></div>
+ <div class="msg" role="status"></div>
+</div>
+<script>(function(){{const gc=document.getElementById('gc'), btn=document.getElementById('pr-send'), msg=gc.querySelector('.msg');
+btn.addEventListener('click',async()=>{{
+ if(btn.disabled)return;
+ btn.disabled=true;msg.textContent='';gc.classList.add('sent');
+ try{{
+  if(!window.hermes?.send)throw Error();
+  const ack=await window.hermes.send({approve});
+  if(ack?.ok===false)throw Error();
+ }}catch(e){{btn.disabled=false;gc.classList.remove('sent');msg.textContent='Approval was not delivered. Try again.'}}
+}});
+gc.querySelector('.dsb').addEventListener('click',()=>{{btn.disabled=true;gc.classList.add('sent')}});
 }})()</script>
 {CONTRAST_JS}"""
 

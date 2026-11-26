@@ -1,0 +1,12 @@
+{
+  "draft_id": "github-demo",
+  "channel": "github",
+  "repo": "example/project",
+  "base": "main",
+  "head": "alex:fix-layout",
+  "pr_number": 42,
+  "changes": "1 file changed",
+  "subject": "fix: keep the card aligned",
+  "body": "## Summary\n\n- Align the card with its container.\n- Preserve **keyboard access**.\n\n## Verification\n\nTests pass with `python -m unittest`.",
+  "url": "https://github.com/example/project/pull/42"
+}

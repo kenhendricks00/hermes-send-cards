@@ -50,6 +50,8 @@ def main():
             write(n, example(n))
             write(f'{n}-sent', example(n), 'sent')
             write(f'{n}-discarded', example(n), 'discarded')
+        write('github', example('github'))
+        write('github-sent', example('github'), 'sent')
         write('email-nocard', example('email'), theme=NO_CARD)
         write('x-nocard', example('x'), theme=NO_CARD)
         write('email-plain', example('email'), theme='', bg='#ffffff')
@@ -230,6 +232,43 @@ def main():
                 pg = open_page('linkedin', 390, 844)
                 snap(pg, 'phone.png')
                 passed.append('390px: no horizontal overflow, menu stays on screen')
+
+                for width in (360, 600):
+                    pg = open_page('github', width=width)
+                    assert pg.locator('.gr .k').all_text_contents() == ['Repo', 'Branch', 'Changes']
+                    assert pg.locator('.gr .k').last.evaluate('e=>getComputedStyle(e).whiteSpace') == 'nowrap'
+                    assert pg.evaluate('document.documentElement.scrollWidth <= innerWidth')
+                    assert pg.locator('.md h3').first.inner_text() == 'Summary'
+                    if width == 600:
+                        snap(pg, 'github-pr.png')
+                    pg.evaluate('window.__ack={ok:false}')
+                    pg.locator('.prb').click()
+                    assert pg.locator('.msg').inner_text() == 'Approval was not delivered. Try again.'
+                    pg.evaluate('window.__ack={ok:true}')
+                    pg.locator('.prb').click()
+                    assert sent(pg) == ['Send draft github-demo exactly as shown.'] * 2
+                    pg.close()
+                pg = open_page('github-sent')
+                pill = pg.locator('summary.pill')
+                toggle = pill.locator('.tg')
+                for expanded in (False, True):
+                    pg.mouse.move(630, 890)
+                    pg.wait_for_timeout(180)
+                    assert toggle.evaluate('e=>getComputedStyle(e).opacity') == '0'
+                    pill.hover(position={'x': 40, 'y': 20})
+                    pg.wait_for_timeout(180)
+                    assert toggle.evaluate('e=>getComputedStyle(e).opacity') == '1'
+                    pg.wait_for_timeout(180)
+                    assert toggle.evaluate('e=>getComputedStyle(e).backgroundColor') == 'rgba(0, 0, 0, 0)'
+                    toggle.hover()
+                    pg.wait_for_timeout(180)
+                    assert toggle.evaluate('e=>getComputedStyle(e).backgroundColor') != 'rgba(0, 0, 0, 0)'
+                    assert toggle.locator('.t-close' if expanded else '.t-open').is_visible()
+                    if not expanded:
+                        toggle.click()
+                        assert pg.get_by_text('View on GitHub').get_attribute('href') == 'https://github.com/example/project/pull/42'
+                passed.append('GitHub PR cards: metadata, approval retry, verified link and separate hover states')
+                pg.close()
 
                 assert not errors, errors
                 assert not blocked, blocked

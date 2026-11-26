@@ -21,6 +21,12 @@ The card is a self-contained HTML file rendered with the built-in
 the iPhone app. Buttons use `data-hermes-send` (and `window.hermes.send` for
 Send): a tap sends a prompt back to you as the user's message.
 
+## GitHub pull requests
+
+Use `channel: "github"` with `repo` (`owner/repo`), `base`, `head`, an observed `changes` summary, `subject`, and `body`. Set `pr_number` for an update. The read-only card shows the repository, branch direction, change count and a preview of the description using a small, escaped Markdown subset. Send the original title and body unchanged. Open PR and Update PR only relay approval to the agent; the card does not call GitHub or bypass approval. After independently verifying the result, set `pr_number` and `url` to the exact GitHub permalink; for newly opened PRs also set `action: "open"` in the completed record. Render it as sent to show the link.
+
+Completed cards reveal the chevrons on card hover or keyboard focus. Hovering directly over the chevrons adds the circular highlight, for both expanded and collapsed cards. Touch devices always show the control.
+
 ## HARD RULE
 
 **Never send until the user taps Send / Post on the card, or types an explicit
