@@ -158,8 +158,13 @@ when the draft JSON includes them:
 - Sent and discarded pills are short. Pass `height="120"` on the `::preview`
   directive so the frame starts at the pill's size; some hosts only grow
   inline frames and never shrink them.
-- A dimmed card after a tap means the prompt was handed off, not that the
-  message was delivered.
+- Tapping Send or Discard collapses the card into its Sent or Discarded pill
+  as soon as Hermes accepts the tap (with the user's edits). That pill means
+  the user approved, not that the message was delivered: still send it, then
+  re-render the same path with `--state sent --sent-at ...` so a reload shows
+  the confirmed state. If delivery fails, say so in chat. If Hermes rejects
+  the tap, the card stays open with a retry message. "Needs approval",
+  "Disable drafts" and "Manage rules" leave the card open.
 - Outside the apps that render `::preview` (CLI, TUI, messaging platforms), the
   directive shows as text. There, show the full message as plain text and ask
   for an explicit yes for that draft before sending.

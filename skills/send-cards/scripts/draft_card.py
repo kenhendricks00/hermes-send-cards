@@ -356,7 +356,7 @@ def quote_html(rt):
     return f'<details class="q"><summary>{meta}<div class="qt">{E(str(rt["text"]))}</div></summary></details>'
 
 
-def render(o, state="pending", base_dir=None):
+def _render(o, state="pending", base_dir=None):
     if not isinstance(o, dict):
         raise DraftError("draft JSON must be an object")
     if not str(o.get("draft_id", "")).strip():
@@ -442,7 +442,7 @@ def render(o, state="pending", base_dir=None):
   <button class="xbtn xp" data-hermes-send="{E(f'Send draft {did} exactly as shown.')}">Post</button></div>
 </div>
 <script>(function(){{const gc=document.getElementById('gc'),t={js_json(text)};
-gc.querySelectorAll('[data-hermes-send]').forEach(b=>b.addEventListener('click',()=>gc.classList.add('sent')));
+gc.querySelectorAll('[data-hermes-send]').forEach(b=>b.addEventListener('click',()=>{{gc.classList.add('sent');if(b.classList.contains('xp'))setTimeout(()=>window.__dcDone&&window.__dcDone('sent'),120)}}));
 const c=document.getElementById('xcopy');c.addEventListener('click',()=>{{
  const done=()=>{{c.classList.add('ok');setTimeout(()=>c.classList.remove('ok'),1200)}};
  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(done).catch(()=>{{
@@ -530,9 +530,12 @@ sb.addEventListener('click',()=>{{if(!ok())return;
  if(p.length>max){{msg.textContent='These edits are too long to send from the card. Describe the change in chat and a new card will follow.';return}}
  msg.textContent='';lock();
  if(window.hermes&&window.hermes.send){{Promise.resolve(window.hermes.send(p)).then(a=>{{
-  if(a&&a.ok===false)unlock(a.error==='throttled'?'Too fast. Tap Send again.':'Not delivered. Tap Send again.')}},()=>unlock('Not delivered. Tap Send again.'))}}
+  if(a&&a.ok===false)unlock(a.error==='throttled'?'Too fast. Tap Send again.':'Not delivered. Tap Send again.');
+  else window.__dcDone&&window.__dcDone('sent',ch.length?cur:null)}},()=>unlock('Not delivered. Tap Send again.'))}}
 }});
-gc.querySelectorAll('[data-hermes-send]').forEach(b=>b.addEventListener('click',lock));
+gc.querySelectorAll('[data-hermes-send]').forEach(b=>b.addEventListener('click',()=>{{
+ const p=b.getAttribute('data-hermes-send')||'';if(/Keep draft .* waiting/.test(p)){{const m=b.closest('details');if(m)m.open=false;return}}
+ lock();if(/then send draft/.test(p))setTimeout(()=>window.__dcDone&&window.__dcDone('sent'),120)}}));
 }})()</script>
 {CONTRAST_JS}"""
 
@@ -595,11 +598,43 @@ btn.addEventListener('click',async()=>{{
   if(!window.hermes?.send)throw Error();
   const ack=await window.hermes.send({approve});
   if(ack?.ok===false)throw Error();
+  window.__dcDone&&window.__dcDone('sent');
  }}catch(e){{btn.disabled=false;gc.classList.remove('sent');msg.textContent='Approval was not delivered. Try again.'}}
 }});
 gc.querySelector('.dsb').addEventListener('click',()=>{{btn.disabled=true;gc.classList.add('sent')}});
 }})()</script>
 {CONTRAST_JS}"""
+
+
+SWAP_JS = """<script>(function(){
+// Collapse the card into its completed pill the moment the choice is made, like Grok Bot does.
+// The agent still re-renders the card with the final state; this keeps the chat from looking frozen.
+window.__dcDone=function(state,cur){
+ const gc=document.getElementById('gc'),t=document.getElementById('dc-'+state);
+ if(!gc||!t||gc.dataset.done)return;gc.dataset.done='1';
+ const d=t.content.firstElementChild.cloneNode(true);
+ if(cur){const set=(sel,v)=>{const e=d.querySelector(sel);if(e&&v)e.textContent=v};
+  set('.gt',cur.subject);set('.gb',cur.body);
+  d.querySelectorAll('.gr').forEach(r=>{const k=(r.querySelector('.k')||{}).textContent,v=r.querySelector('.v');
+   const f={To:'to',Cc:'cc',Bcc:'bcc'}[k];if(f&&v&&cur[f])v.textContent=cur[f]})}
+ gc.replaceWith(d)};
+document.querySelectorAll('#gc .dsb,#gc .xd').forEach(b=>b.addEventListener('click',()=>setTimeout(()=>window.__dcDone('discarded'),120)));
+})()</script>"""
+
+
+def render(o, state="pending", base_dir=None):
+    html = _render(o, state, base_dir)
+    if state != "pending":
+        return html
+
+    def pill(st):
+        # Nothing has been confirmed yet, so drop any sent time or PR link the draft might carry.
+        out = _render({k: v for k, v in o.items() if k not in ("sent_at", "url", "number")}, st, base_dir)
+        return out.split("</style>", 1)[1].strip() if "</style>" in out else out
+
+    return (html + f"\n<style>{DONE_CSS}{XCSS}</style>"
+            + f'<template id="dc-sent">{pill("sent")}</template>'
+            + f'<template id="dc-discarded">{pill("discarded")}</template>\n{SWAP_JS}')
 
 
 def main(argv=None):

@@ -106,8 +106,10 @@ def main():
                 p = sent(pg)
                 assert len(p) == 1 and p[0].startswith('Send draft em-7f3a with my edits'), p
                 assert 'SUBJECT: Re: Q4 venue contract, notes inside' in p[0] and 'BODY' not in p[0], p
-                assert pg.locator('#gc').evaluate('e => e.classList.contains("sent")')
-                passed.append('email inline subject edit -> edit prompt')
+                pg.wait_for_timeout(100)
+                pill = pg.locator('details.done')
+                assert pill.count() == 1 and pill.locator('.gt').text_content() == 'Re: Q4 venue contract, notes inside'
+                passed.append('email inline subject edit -> edit prompt, card collapses with the edit')
 
                 # Email: unchanged Send gives the exact-as-shown prompt.
                 pg = open_page('email')
