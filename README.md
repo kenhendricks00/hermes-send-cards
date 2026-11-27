@@ -194,6 +194,7 @@ Each works on its own; together they bring Grok Bot style inline cards to Hermes
 - [Weather Cards](https://github.com/kenhendricks00/hermes-weather-cards): real forecasts you can read at a glance.
 - [Input Cards](https://github.com/kenhendricks00/hermes-input-cards): give your agent an API key through Hermes's secure prompt.
 - [Hermes Pages](https://github.com/kenhendricks00/hermes-pages-plugin): turn useful answers into clean, shareable pages.
+- [Places Cards](https://github.com/kenhendricks00/hermes-places-cards): nearby places with honest source data.
 
 ## License
 
