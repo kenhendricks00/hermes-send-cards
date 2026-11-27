@@ -119,7 +119,7 @@ details.q[open] .qt{display:block;-webkit-line-clamp:unset}
 .af small{color:var(--mfg);font-size:12.5px;flex:none}
 .chev{width:8px;height:8px;border-right:1.8px solid var(--cd);border-bottom:1.8px solid var(--cd);transform:rotate(45deg) translate(-2px,-2px)}
 .gf{display:flex;justify-content:flex-end;align-items:center;gap:14px;margin-top:20px}
-.dsb{all:unset;cursor:pointer;color:var(--mfg);font-size:15.5px;padding:8px 6px}
+.dsb{all:unset;cursor:pointer;color:var(--mfg);font-size:15.5px;padding:8px 14px;border-radius:999px;transition:background-color .15s,color .15s}.dsb:hover{background:color-mix(in srgb,currentColor 14%,transparent);color:var(--fg,var(--foreground))}
 .sp{display:flex;align-items:center;background:var(--fg);color:var(--cd);border-radius:999px;position:relative}
 .sd{all:unset;cursor:pointer;height:40px;display:flex;align-items:center;padding:0 14px 0 22px;font-size:15.5px;font-weight:500}
 .sep{width:1px;height:18px;background:color-mix(in srgb,var(--cd) 30%,transparent)}
